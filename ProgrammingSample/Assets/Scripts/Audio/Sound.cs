@@ -26,6 +26,8 @@ namespace AnyoxGames.Audio
 
         protected override void Awake()
         {
+            base.Awake();
+            
             for (int i = 0; i < audioSourcePoolSize; i++)
             {
                 CreateNewAudioSource();
@@ -38,15 +40,15 @@ namespace AnyoxGames.Audio
             {
                 if (!inUseSources[i].Source)
                 {
-                    Debug.LogWarning("SFX instance was destroyed");
+                    Debug.LogWarning("Audio instance was destroyed");
                     inUseSources.RemoveAt(i);
                     CreateNewAudioSource();
                 }
-
+                
                 if (inUseSources[i].HasExpired)
                 {
                     inUseSources[i].Source.Stop();
-                    inUseSources[i].Source.transform.SetParent(transform);
+                    inUseSources[i].Source.transform.SetParent(transform, false);
                     availableSources.Enqueue(inUseSources[i]);
                     inUseSources.RemoveAt(i);
                 }
@@ -56,83 +58,86 @@ namespace AnyoxGames.Audio
         private void CreateNewAudioSource()
         {
             var newInstance = Instantiate(template, transform, false);
-            newInstance.gameObject.name = "SFXInstance";
-            availableSources.Enqueue(new AudioInstance() { Source = newInstance });
+            newInstance.gameObject.name = "AudioInstance";
+            availableSources.Enqueue(new AudioInstance { Source = newInstance });
         }
 
+        /// <summary>
+        /// Play a audio clip outside 3D space, e.g UI sounds
+        /// </summary>
         public static AudioInstance PlayDirect(AudioClip clip, float volume = 1.0f, bool loop = false)
         {
-            if (IServiceManager.Default.TryGetService<Sound>(out var soundService))
-            {
-                return soundService.PlaySoundDirect_Internal(clip, volume, loop);
-            }
-            
-            throw new InvalidImplementationException("No sound service found");
+            if (!IServiceManager.Default.TryGetService<Sound>(out var soundService))
+                throw new InvalidImplementationException("No sound service found");
+                
+            return soundService.PlaySoundDirect_Internal(clip, volume, loop);
         }
 
         private AudioInstance PlaySoundDirect_Internal(AudioClip clip, float volume, bool loop)
         {
-            var sfxInstance = availableSources.Dequeue();
-            sfxInstance.Source.transform.SetParent(transform);
-            sfxInstance.Source.spatialBlend = 0;
-            sfxInstance.Source.volume = volume;
-            sfxInstance.Source.loop = loop;
-            sfxInstance.Source.PlayOneShot(clip);
-            sfxInstance.EndTime = Time.time + clip.length;
-            inUseSources.Add(sfxInstance);
+            var audioInstance = availableSources.Dequeue();
+            audioInstance.Source.transform.SetParent(transform);
+            audioInstance.Source.spatialBlend = 0;
+            audioInstance.Source.volume = volume;
+            audioInstance.Source.loop = loop;
+            audioInstance.Source.PlayOneShot(clip);
+            audioInstance.EndTime = Time.time + clip.length;
+            inUseSources.Add(audioInstance);
 
-            return sfxInstance;
+            return audioInstance;
         }
 
+        /// <summary>
+        /// Play a audio clip at a 3D position, e.g light switches, doors opening
+        /// </summary>
         public static AudioInstance PlayAtPosition(AudioClip clip, Vector3 position, float volume = 1, bool loop = false)
         {
-            if (IServiceManager.Default.TryGetService<Sound>(out var soundService))
-            {
-                return soundService.PlaySoundAtPosition_Internal(clip, position, volume, loop);
-            }
-            
-            throw new InvalidImplementationException("No sound service found");
+            if (!IServiceManager.Default.TryGetService<Sound>(out var soundService))
+                throw new InvalidImplementationException("No sound service found");
+
+            return soundService.PlaySoundAtPosition_Internal(clip, position, volume, loop);
         }
 
         private AudioInstance PlaySoundAtPosition_Internal(AudioClip clip, Vector3 position, float volume, bool loop)
         {
-            var sfxInstance = availableSources.Dequeue();
-            sfxInstance.Source.transform.SetParent(null);
-            sfxInstance.Source.transform.position = position;
-            sfxInstance.Source.spatialBlend = 1;
-            sfxInstance.Source.volume = volume;
-            sfxInstance.Source.loop = loop;
-            sfxInstance.Source.clip = clip;
-            sfxInstance.Source.Play();
-            sfxInstance.EndTime = Time.time + clip.length;
-            inUseSources.Add(sfxInstance);
+            var audioInstance = availableSources.Dequeue();
+            audioInstance.Source.transform.SetParent(null);
+            audioInstance.Source.transform.position = position;
+            audioInstance.Source.spatialBlend = 1;
+            audioInstance.Source.volume = volume;
+            audioInstance.Source.loop = loop;
+            audioInstance.Source.clip = clip;
+            audioInstance.Source.Play();
+            audioInstance.EndTime = Time.time + clip.length;
+            inUseSources.Add(audioInstance);
 
-            return sfxInstance;
+            return audioInstance;
         }
 
+        /// <summary>
+        /// Play a audio clip on a moving 3D object, e.g rigidbody impacts, footsteps, projectiles
+        /// </summary>
         public static AudioInstance PlaySoundMoving(AudioClip clip, Transform targetTransform, float volume = 1)
         {
             if (IServiceManager.Default.TryGetService<Sound>(out var soundService))
-            {
-                return soundService.PlayMoving_Internal(clip, targetTransform, volume);
-            }
+                throw new InvalidImplementationException("No sound service found");
             
-            throw new InvalidImplementationException("No sound service found");
+            return soundService.PlayMoving_Internal(clip, targetTransform, volume);
         }
 
         private AudioInstance PlayMoving_Internal(AudioClip clip, Transform targetTransform, float volume)
         {
-            var sfxInstance = availableSources.Dequeue();
-            sfxInstance.Source.transform.SetParent(targetTransform, false);
-            sfxInstance.Source.transform.localPosition = Vector3.zero;
-            sfxInstance.Source.spatialBlend = 1;
-            sfxInstance.Source.volume = volume;
-            sfxInstance.Source.clip = clip;
-            sfxInstance.Source.Play();
-            sfxInstance.EndTime = Time.time + clip.length;
-            inUseSources.Add(sfxInstance);
+            var audioInstance = availableSources.Dequeue();
+            audioInstance.Source.transform.SetParent(targetTransform, false);
+            audioInstance.Source.transform.localPosition = Vector3.zero;
+            audioInstance.Source.spatialBlend = 1;
+            audioInstance.Source.volume = volume;
+            audioInstance.Source.clip = clip;
+            audioInstance.Source.Play();
+            audioInstance.EndTime = Time.time + clip.length;
+            inUseSources.Add(audioInstance);
 
-            return sfxInstance;
+            return audioInstance;
         }
     }
 }

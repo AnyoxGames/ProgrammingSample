@@ -9,6 +9,9 @@ namespace AnyoxGames.Audio
 
         public bool HasExpired => !Source.loop && Time.time > EndTime;
 
+        /// <summary>
+        /// Instantly expire the audio instance
+        /// </summary>
         public void Expire()
         {
             if (Source)

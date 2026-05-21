@@ -6,10 +6,6 @@ namespace AnyoxGames.Audio
 {
     public class TerrainFoleyMaterial : MonoBehaviour, IFoleyCollider
     {
-        [SerializeField] private Terrain terrain;
-        [SerializeField] private FoleyMaterialEntry[] entries;
-        [SerializeField] private float runSpeedThreshold = 10;
-
         [Serializable]
         public struct FoleyMaterialEntry
         {
@@ -17,6 +13,10 @@ namespace AnyoxGames.Audio
             public SoundBank walkingSoundBank;
             public SoundBank runningSoundBank;
         }
+        
+        [SerializeField] private Terrain terrain;
+        [SerializeField] private FoleyMaterialEntry[] entries;
+        [SerializeField] private float runSpeedThreshold = 10;
 
         private readonly Dictionary<TerrainLayer, FoleyMaterialEntry> cachedEntries = new();
         private readonly Dictionary<TerrainLayer, float> terrainMixture = new();
