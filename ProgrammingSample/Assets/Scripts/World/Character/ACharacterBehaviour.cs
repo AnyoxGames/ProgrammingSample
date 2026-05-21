@@ -22,6 +22,18 @@ namespace AnyoxGames.Character
         {
         }
 
+        protected bool GetCharacterAs<T>(out T castedCharacter) where T : ACharacter
+        {
+            if (character is T casted)
+            {
+                castedCharacter = casted;
+                return true;
+            }
+
+            castedCharacter = null;
+            return false;
+        }
+
 /*#if UNITY_EDITOR
     [HideIf("Editor_IsCharacterDefined"), Button("Revalidate Character")]
     private void Editor_RevalidateCharacter()

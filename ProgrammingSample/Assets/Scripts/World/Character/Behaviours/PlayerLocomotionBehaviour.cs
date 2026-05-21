@@ -4,7 +4,7 @@ using UnityEngine;
 namespace AnyoxGames.Character
 {
     [RequireComponent(typeof(CharacterController))]
-    public class CharacterLocomotionBehaviour : ACharacterBehaviour
+    public class PlayerLocomotionBehaviour : ACharacterBehaviour
     {
         private const float JUMP_GROUNDING_PREVENTION_TIME = 0.2f;
         private const float GROUND_CHECK_DISTANCE_IN_AIR = 0.07f;
@@ -22,7 +22,6 @@ namespace AnyoxGames.Character
         [SerializeField] private float capsuleHeightCrouching = 0.9f;
         [SerializeField] private float capsuleHeightStanding = 2f;
         [SerializeField] private float crouchingSharpness = 10f;
-        [SerializeField] private Transform cameraTarget;
 
         private bool landedThisFrame;
         private bool jumpedThisFrame;
@@ -182,7 +181,10 @@ namespace AnyoxGames.Character
                 characterController.center = Vector3.up * (characterController.height * 0.5f);
             }
 
-            cameraTarget.localPosition = Vector3.up * (characterController.height * 0.9f);
+            if (GetCharacterAs<Player>(out var player))
+            {
+                player.CameraTarget.localPosition = Vector3.up * (characterController.height * 0.9f);
+            }
         }
 
         private void GroundCheck()

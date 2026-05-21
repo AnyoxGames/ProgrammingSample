@@ -46,49 +46,121 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterInputBehaviour
   character: {fileID: 6942353747674368120}
   moveAction:
-    m_Name: 
+    m_Name: Move
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 987fa028-e5a3-4528-a859-a6210603c39c
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings: []
+    m_SingletonActionBindings:
+    - m_Name: Move
+      m_Id: 39f42185-43bf-421f-a5bd-2a36e411956c
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 4
+    - m_Name: up
+      m_Id: 1602d2d5-1a22-48d9-8e6f-9d1d94704aef
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 996bfda9-c00c-4066-834d-2c729d3e442f
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    - m_Name: left
+      m_Id: ee174b07-7319-4ddb-a61a-853f031bd957
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    - m_Name: right
+      m_Id: a94fa123-e94f-492e-b889-a10cac045663
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
     m_Flags: 0
   jumpAction:
-    m_Name: 
+    m_Name: Jump
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 660330a3-bdea-43ec-8113-f320eed4b471
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings: []
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 5d76fb00-8d56-4f71-a3ac-e0c166c939a0
+      m_Path: <Keyboard>/space
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Jump
+      m_Flags: 0
     m_Flags: 0
   sprintAction:
-    m_Name: 
+    m_Name: Sprint
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 9627fe9c-1c33-4fc8-a5c1-54521e24478c
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings: []
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 8ae0875b-95b9-477f-8324-8ecae7772a72
+      m_Path: <Keyboard>/leftShift
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Sprint
+      m_Flags: 0
     m_Flags: 0
   walkAction:
-    m_Name: 
+    m_Name: Walk
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: bb676146-b740-4f97-be4d-d4bddef8eade
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings: []
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: c9da1c60-4abe-412e-81a3-eda025aaa36d
+      m_Path: <Keyboard>/leftAlt
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Walk
+      m_Flags: 0
     m_Flags: 0
   crouchAction:
-    m_Name: 
+    m_Name: Crouch
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: ddc58dee-d7b1-402c-91e0-d4b8fe517a98
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings: []
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: a02a1676-9ad2-4dda-9b96-7cdc63671475
+      m_Path: <Keyboard>/leftCtrl
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Crouch
+      m_Flags: 0
     m_Flags: 0
 --- !u!1 &4717028678177661812
 GameObject:
@@ -359,7 +431,7 @@ MonoBehaviour:
   - {fileID: 1601946323355584442}
   - {fileID: 7318009615919190927}
   - {fileID: 1690464379803768257}
-  cameraTarget: {fileID: 0}
+  cameraTarget: {fileID: 1943378085125043061}
 --- !u!114 &7318009615919190927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,7 +460,6 @@ MonoBehaviour:
   capsuleHeightCrouching: 0.9
   capsuleHeightStanding: 2
   crouchingSharpness: 10
-  cameraTarget: {fileID: 1943378085125043061}
 --- !u!114 &1690464379803768257
 MonoBehaviour:
   m_ObjectHideFlags: 0

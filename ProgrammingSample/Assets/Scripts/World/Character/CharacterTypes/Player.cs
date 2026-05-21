@@ -9,6 +9,8 @@ namespace AnyoxGames.Character
     {
         [SerializeField] private Transform cameraTarget;
 
+        public Transform CameraTarget => cameraTarget;
+
         protected override void Awake()
         {
             IServiceManager.Default.TryRegisterService<Player>(this);

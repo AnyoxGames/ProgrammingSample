@@ -11,7 +11,7 @@ namespace AnyoxGames.Character
         private IFoleyCollider foleyCollider;
         private float distanceSinceLastFootstep;
         private Vector3 lastPosition;
-        private CharacterLocomotionBehaviour locomotionBehaviour;
+        private PlayerLocomotionBehaviour locomotionBehaviour;
 
         public override void Initialize()
         {

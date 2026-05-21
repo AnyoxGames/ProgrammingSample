@@ -11,7 +11,7 @@ namespace AnyoxGames.Audio
         
         public void PlayFootstepSound(ACharacter character, float masterVolume)
         {
-            var isRunning = character.TryGetCharacterBehaviour(out CharacterLocomotionBehaviour locomotionBehaviour) && locomotionBehaviour.Velocity.sqrMagnitude > runSpeedThreshold;
+            var isRunning = character.TryGetCharacterBehaviour(out PlayerLocomotionBehaviour locomotionBehaviour) && locomotionBehaviour.Velocity.sqrMagnitude > runSpeedThreshold;
             Sound.PlayAtPosition(isRunning ? runningSoundBank.Next() : walkingSoundBank.Next(), character.transform.position, masterVolume);
         }
     }

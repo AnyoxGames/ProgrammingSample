@@ -49,7 +49,7 @@ namespace AnyoxGames.Audio
         {
             RefreshTerrainMix(character.transform.position);
             
-            var isRunning = character.TryGetCharacterBehaviour(out CharacterLocomotionBehaviour locomotionBehaviour) && locomotionBehaviour.Velocity.sqrMagnitude > runSpeedThreshold;
+            var isRunning = character.TryGetCharacterBehaviour(out PlayerLocomotionBehaviour locomotionBehaviour) && locomotionBehaviour.Velocity.sqrMagnitude > runSpeedThreshold;
             
             foreach (var (layer, mix) in terrainMixture) if (cachedEntries.ContainsKey(layer) && mix > 0.1f)
             {
