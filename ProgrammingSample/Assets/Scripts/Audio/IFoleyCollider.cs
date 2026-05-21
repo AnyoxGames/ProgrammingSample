@@ -1,4 +1,6 @@
-﻿namespace AnyoxGames.Audio
+﻿using AnyoxGames.Character;
+
+namespace AnyoxGames.Audio
 {
     public interface IFoleyCollider
     {

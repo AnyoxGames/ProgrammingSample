@@ -1,3 +1,6 @@
-public abstract class NPC : ACharacter
+namespace AnyoxGames.Character
 {
+    public abstract class NPC : ACharacter
+    {
+    }
 }

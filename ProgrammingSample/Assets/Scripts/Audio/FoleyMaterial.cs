@@ -1,3 +1,4 @@
+using AnyoxGames.Character;
 using UnityEngine;
 
 namespace AnyoxGames.Audio

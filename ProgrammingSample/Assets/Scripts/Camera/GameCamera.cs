@@ -1,4 +1,5 @@
 using System;
+using AnyoxGames.Interactables;
 using AnyoxGames.Service;
 using AnyoxGames.UI;
 using AnyoxGames.Util;

@@ -2,113 +2,116 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[CharacterBehaviour(-100)]
-public class CharacterInputBehaviour : ACharacterBehaviour
+namespace AnyoxGames.Character
 {
-    [SerializeField] private InputAction MoveAction;
-    [SerializeField] private InputAction JumpAction;
-    [SerializeField] private InputAction SprintAction;
-    [SerializeField] private InputAction WalkAction;
-    [SerializeField] private InputAction CrouchAction;
-
-    public Vector2 MoveInput { get; set; }
-    public bool JumpRequested { get; set; }
-    public bool SprintRequested { get; set; }
-    public bool WalkRequested { get; set; }
-    public bool CrouchRequested { get; set; }
-    
-    private void Awake()
+    [CharacterBehaviour(-100)]
+    public class CharacterInputBehaviour : ACharacterBehaviour
     {
-        MoveAction.performed += OnMove;
-        MoveAction.canceled += OnMove;
-        MoveAction.Enable();
-        JumpAction.performed += OnJump;
-        JumpAction.Enable();
-        SprintAction.performed += OnSprint;
-        SprintAction.canceled += OnSprint;
-        SprintAction.Enable();
-        WalkAction.performed += OnWalk;
-        WalkAction.canceled += OnWalk;
-        WalkAction.Enable();
-        CrouchAction.performed += OnCrouch;
-        CrouchAction.canceled += OnCrouch;
-        CrouchAction.Enable();
-    }
+        [SerializeField] private InputAction moveAction;
+        [SerializeField] private InputAction jumpAction;
+        [SerializeField] private InputAction sprintAction;
+        [SerializeField] private InputAction walkAction;
+        [SerializeField] private InputAction crouchAction;
 
-    private void OnDestroy()
-    {
-        MoveAction.performed -= OnMove;
-        MoveAction.canceled -= OnMove;
-        MoveAction.Disable();
-        JumpAction.performed -= OnJump;
-        JumpAction.Disable();
-        SprintAction.performed -= OnSprint;
-        SprintAction.canceled -= OnSprint;
-        SprintAction.Disable();
-        WalkAction.performed -= OnWalk;
-        WalkAction.canceled -= OnWalk;
-        WalkAction.Disable();
-        CrouchAction.performed -= OnCrouch;
-        CrouchAction.canceled -= OnCrouch;
-        CrouchAction.Disable();
-    }
+        public Vector2 MoveInput { get; private set; }
+        public bool JumpRequested { get; private set; }
+        public bool SprintRequested { get; private set; }
+        public bool WalkRequested { get; private set; }
+        public bool CrouchRequested { get; private set; }
 
-    private void OnMove(InputAction.CallbackContext context)
-    {
-        if (!CursorUtils.IsCursorCaptured)
+        private void Awake()
         {
-            MoveInput = Vector2.zero;
-            return;
+            moveAction.performed += OnMove;
+            moveAction.canceled += OnMove;
+            sprintAction.performed += OnSprint;
+            sprintAction.canceled += OnSprint;
+            walkAction.performed += OnWalk;
+            walkAction.canceled += OnWalk;
+            crouchAction.performed += OnCrouch;
+            crouchAction.canceled += OnCrouch;
+            jumpAction.performed += OnJump;
+            moveAction.Enable();
+            sprintAction.Enable();
+            walkAction.Enable();
+            crouchAction.Enable();
+            jumpAction.Enable();
         }
 
-        MoveInput = context.ReadValue<Vector2>();
-    }
-
-    private void OnJump(InputAction.CallbackContext context)
-    {
-        if (!CursorUtils.IsCursorCaptured)
+        private void OnDestroy()
         {
-            return;
+            moveAction.performed -= OnMove;
+            moveAction.canceled -= OnMove;
+            sprintAction.performed -= OnSprint;
+            sprintAction.canceled -= OnSprint;
+            walkAction.performed -= OnWalk;
+            walkAction.canceled -= OnWalk;
+            crouchAction.performed -= OnCrouch;
+            crouchAction.canceled -= OnCrouch;
+            jumpAction.performed -= OnJump;
+            moveAction.Disable();
+            sprintAction.Disable();
+            walkAction.Disable();
+            crouchAction.Disable();
+            jumpAction.Disable();
         }
 
-        JumpRequested = context.ReadValueAsButton();
-    }
-
-    private void OnSprint(InputAction.CallbackContext context)
-    {
-        if (!CursorUtils.IsCursorCaptured)
+        private void OnMove(InputAction.CallbackContext context)
         {
-            SprintRequested = false;
-            return;
+            if (!CursorUtils.IsCursorCaptured)
+            {
+                MoveInput = Vector2.zero;
+                return;
+            }
+
+            MoveInput = context.ReadValue<Vector2>();
         }
 
-        SprintRequested = context.ReadValueAsButton();
-    }
-    
-    private void OnWalk(InputAction.CallbackContext context)
-    {
-        if (!CursorUtils.IsCursorCaptured)
+        private void OnJump(InputAction.CallbackContext context)
         {
-            WalkRequested = false;
-            return;
+            if (!CursorUtils.IsCursorCaptured)
+            {
+                return;
+            }
+
+            JumpRequested = context.ReadValueAsButton();
         }
 
-        WalkRequested = context.ReadValueAsButton();
-    }
-    
-    private void OnCrouch(InputAction.CallbackContext context)
-    {
-        if (!CursorUtils.IsCursorCaptured)
+        private void OnSprint(InputAction.CallbackContext context)
         {
-            CrouchRequested = false;
-            return;
+            if (!CursorUtils.IsCursorCaptured)
+            {
+                SprintRequested = false;
+                return;
+            }
+
+            SprintRequested = context.ReadValueAsButton();
         }
 
-        CrouchRequested = context.ReadValueAsButton();
-    }
+        private void OnWalk(InputAction.CallbackContext context)
+        {
+            if (!CursorUtils.IsCursorCaptured)
+            {
+                WalkRequested = false;
+                return;
+            }
 
-    public void ConsumeJumpRequest()
-    {
-        JumpRequested = false;
+            WalkRequested = context.ReadValueAsButton();
+        }
+
+        private void OnCrouch(InputAction.CallbackContext context)
+        {
+            if (!CursorUtils.IsCursorCaptured)
+            {
+                CrouchRequested = false;
+                return;
+            }
+
+            CrouchRequested = context.ReadValueAsButton();
+        }
+
+        public void ConsumeJumpRequest()
+        {
+            JumpRequested = false;
+        }
     }
 }

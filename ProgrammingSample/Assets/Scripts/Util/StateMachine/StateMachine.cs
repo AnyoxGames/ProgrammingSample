@@ -2,46 +2,46 @@ namespace AnyoxGames.Util
 {
     public class StateMachine<T>
     {
-        private IStateMachineBehaviour<T> CurrentState;
-        private IStateMachineBehaviour<T> OverrideState;
-        public bool IsInState => CurrentState != null;
+        private IStateMachineBehaviour<T> currentState;
+        private IStateMachineBehaviour<T> overrideState;
+        public bool IsInState => currentState != null;
 
-        public T Target;
+        private readonly T target;
 
         public StateMachine(T target)
         {
-            Target = target;
+            this.target = target;
         }
 
         public void SetState(IStateMachineBehaviour<T> state)
         {
-            CurrentState?.ExitState(Target);
-            CurrentState = state;
-            CurrentState?.EnterState(Target);
+            currentState?.ExitState(target);
+            currentState = state;
+            currentState?.EnterState(target);
         }
 
         public void ClearOverrideState()
         {
-            OverrideState?.ExitState(Target);
-            OverrideState = null;
+            overrideState?.ExitState(target);
+            overrideState = null;
         }
 
         public void SetOverrideState(IStateMachineBehaviour<T> state)
         {
-            OverrideState?.ExitState(Target);
-            OverrideState = state;
-            OverrideState?.EnterState(Target);
+            overrideState?.ExitState(target);
+            overrideState = state;
+            overrideState?.EnterState(target);
         }
 
         public void UpdateState()
         {
-            if (OverrideState != null)
+            if (overrideState != null)
             {
-                OverrideState.UpdateState(Target);
+                overrideState.UpdateState(target);
                 return;
             }
 
-            CurrentState?.UpdateState(Target);
+            currentState?.UpdateState(target);
         }
     }
 }

@@ -1,11 +1,15 @@
 ﻿using System;
+using AnyoxGames.Character;
 using UnityEngine;
 
-public interface IInteractable
+namespace AnyoxGames.Interactables
 {
-    public string Name { get; }
-    public string Action { get; }
-    public bool CanAIInteract { get; }
+    public interface IInteractable
+    {
+        public string Name { get; }
+        public string Action { get; }
+        public bool CanAIInteract { get; }
 
-    public void OnInteract(ACharacter character);
+        public void OnInteract(ACharacter character);
+    }
 }

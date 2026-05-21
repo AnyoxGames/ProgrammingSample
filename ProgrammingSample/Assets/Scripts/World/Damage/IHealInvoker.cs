@@ -1,1 +1,6 @@
-﻿public interface IHealInvoker { }
+﻿namespace AnyoxGames
+{
+    public interface IHealInvoker
+    {
+    }
+}

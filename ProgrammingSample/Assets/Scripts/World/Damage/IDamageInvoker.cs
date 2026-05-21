@@ -1,1 +1,6 @@
-﻿public interface IDamageInvoker { }
+﻿namespace AnyoxGames
+{
+    public interface IDamageInvoker
+    {
+    }
+}

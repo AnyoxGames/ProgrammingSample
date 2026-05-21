@@ -1,14 +1,13 @@
 using AnyoxGames.CameraSystem;
 using AnyoxGames.Service;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace AnyoxGames.Character 
 {
     public class Player : ACharacter, IService
     {
-        [SerializeField] private Transform CameraTarget;
+        [SerializeField] private Transform cameraTarget;
 
         protected override void Awake()
         {
@@ -26,7 +25,7 @@ namespace AnyoxGames.Character
 
         private void Start()
         {
-            if (CameraTarget && IServiceManager.Default.TryGetService<GameCamera>(out var cameraSystem))
+            if (cameraTarget && IServiceManager.Default.TryGetService<GameCamera>(out var cameraSystem))
             {
                 cameraSystem.SetTarget(this);
                 cameraSystem.SetBehaviour(cameraSystem.DefaultFirstPersonBehaviour);
@@ -40,7 +39,7 @@ namespace AnyoxGames.Character
 
         public override Transform GetTransformCameraTarget()
         {
-            return CameraTarget;
+            return cameraTarget;
         }
     }
 }

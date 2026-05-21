@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using AnyoxGames.Character;
+using UnityEngine;
 
 namespace AnyoxGames.CameraSystem
 {

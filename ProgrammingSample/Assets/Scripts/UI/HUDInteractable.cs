@@ -1,4 +1,5 @@
 using AnyoxGames.CameraSystem;
+using AnyoxGames.Interactables;
 using AnyoxGames.Service;
 using TMPro;
 using UnityEngine;

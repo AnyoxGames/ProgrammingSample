@@ -1,30 +1,34 @@
-﻿using UnityEngine;
+﻿using AnyoxGames.Character;
+using UnityEngine;
 using UnityEngine.Events;
 
-public class InteractableObject : MonoBehaviour, IInteractable
+namespace AnyoxGames.Interactables
 {
-    [SerializeField] private bool _CanAIInteract = true;
-    [SerializeField] private string NameText;
-    [SerializeField] private string ActionText;
-    [SerializeField] private UnityEvent<ACharacter, IInteractable> InteractCallback;
-
-    public string Name => NameText;
-    public string Action => ActionText;
-    public bool CanAIInteract => _CanAIInteract;
-
-    private void OnValidate()
+    public class InteractableObject : MonoBehaviour, IInteractable
     {
-        if (string.IsNullOrWhiteSpace(NameText))
+        [SerializeField] private bool _CanAIInteract = true;
+        [SerializeField] private string NameText;
+        [SerializeField] private string ActionText;
+        [SerializeField] private UnityEvent<ACharacter, IInteractable> InteractCallback;
+
+        public string Name => NameText;
+        public string Action => ActionText;
+        public bool CanAIInteract => _CanAIInteract;
+
+        private void OnValidate()
         {
-            NameText = gameObject.name;
+            if (string.IsNullOrWhiteSpace(NameText))
+            {
+                NameText = gameObject.name;
+            }
         }
-    }
 
-    public void OnInteract(ACharacter character)
-    {
-        if (character is NPC && !CanAIInteract)
-            return;
-        
-        InteractCallback?.Invoke(character, this);
+        public void OnInteract(ACharacter character)
+        {
+            if (character is NPC && !CanAIInteract)
+                return;
+
+            InteractCallback?.Invoke(character, this);
+        }
     }
 }

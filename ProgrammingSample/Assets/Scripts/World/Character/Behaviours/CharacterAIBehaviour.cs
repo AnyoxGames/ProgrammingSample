@@ -1,37 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using AnyoxGames.Character.AI;
 using UnityEngine;
 using UnityEngine.AI;
 
-[CharacterBehaviour(-100), RequireComponent(typeof(NavMeshAgent))]
-public class CharacterAIBehaviour : ACharacterBehaviour
+namespace AnyoxGames.Character
 {
-    public AIPackage CurrentPackage { get; private set; }
-    public AAIBehaviourState CurrentBehaviourState  { get; private set; }
-    public NavMeshAgent Agent { get; private set; }
+    [CharacterBehaviour(-100), RequireComponent(typeof(NavMeshAgent))]
+    public class CharacterAIBehaviour : ACharacterBehaviour
+    {
+        public AAIPackage CurrentPackage { get; private set; }
+        public AAIState CurrentState { get; private set; }
+        public NavMeshAgent Agent { get; private set; }
 
-    private void Awake()
-    {
-        Agent = GetComponent<NavMeshAgent>();
-    }
+        private void Awake()
+        {
+            Agent = GetComponent<NavMeshAgent>();
+        }
 
-    private void Start()
-    {
-        CurrentPackage = new SandboxPackage(transform.position, 20);
-        DecideNextAction();
-    }
-    
-    private void Update()
-    {
-        CurrentBehaviourState?.Update(Time.deltaTime);
-    }
+        private void Update()
+        {
+            CurrentState?.Update(Time.deltaTime);
+        }
 
-    public void DecideNextAction() => CurrentPackage.DecideNextAction(this);
-    
-    public void SetBehaviour(AAIBehaviourState behaviourState)
-    {
-        CurrentBehaviourState?.End();
-        CurrentBehaviourState = behaviourState;
-        CurrentBehaviourState?.Start();
+        public void DecideNextAction() => CurrentPackage.DecideNextAction(this);
+
+        public void SetBehaviour(AAIState state)
+        {
+            CurrentState?.End();
+            CurrentState = state;
+            CurrentState?.Start();
+        }
+
+        public void SetPackage(AAIPackage package)
+        {
+            CurrentPackage = package;
+            DecideNextAction();
+        }
     }
 }

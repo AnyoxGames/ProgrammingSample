@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AnyoxGames.Character;
 using UnityEngine;
 
 namespace AnyoxGames.Audio

@@ -1,4 +1,5 @@
 ﻿using System;
+using AnyoxGames.Interactables;
 using AnyoxGames.Util;
 using UnityEngine;
 using UnityEngine.InputSystem;
