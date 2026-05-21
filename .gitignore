@@ -12,6 +12,15 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
+ProgrammingSample/.utmp/
+ProgrammingSample/[Ll]ibrary/
+ProgrammingSample/[Tt]emp/
+ProgrammingSample/[Oo]bj/
+ProgrammingSample/[Bb]uild/
+ProgrammingSample/[Bb]uilds/
+ProgrammingSample/[Ll]ogs/
+ProgrammingSample/[Uu]ser[Ss]ettings/
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
