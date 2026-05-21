@@ -35,19 +35,12 @@ namespace AnyoxGames.Util
 
         public void UpdateState()
         {
-            UpdateState(out _);
-        }
-
-        public void UpdateState(out IStateMachineBehaviour<T> currentState)
-        {
             if (OverrideState != null)
             {
-                currentState = OverrideState;
                 OverrideState.UpdateState(Target);
                 return;
             }
 
-            currentState = CurrentState;
             CurrentState?.UpdateState(Target);
         }
     }

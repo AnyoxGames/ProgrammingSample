@@ -1,7 +1,9 @@
+using System;
 using AnyoxGames.Service;
 using AnyoxGames.UI;
 using AnyoxGames.Util;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace AnyoxGames.CameraSystem
 {
@@ -10,15 +12,20 @@ namespace AnyoxGames.CameraSystem
         [SerializeField] private FreeCameraBehaviour defaultFreeBehaviour;
         [SerializeField] private FirstPersonCameraBehaviour defaultFirstPersonBehaviour;
         [SerializeField] private Camera mainCamera;
+        [SerializeField] private InputAction interactAction;
 
         private StateMachine<GameCamera> stateMachine;
+        private IInteractable focusedInteractable;
 
         public ICameraTarget OverrideTarget { get; private set; }
         public ICameraTarget Target { get; private set; }
         public ICameraTarget CurrentTarget => OverrideTarget ?? Target;
         public Camera MainCamera => mainCamera;
+        public IInteractable FocusedInteractable => focusedInteractable;
         public FreeCameraBehaviour DefaultFreeBehaviour => defaultFreeBehaviour;
         public FirstPersonCameraBehaviour DefaultFirstPersonBehaviour => defaultFirstPersonBehaviour;
+
+        public event Action<IInteractable> OnFocusedInteractableChanged;
 
         protected override void Awake()
         {
@@ -28,12 +35,7 @@ namespace AnyoxGames.CameraSystem
 
         private void Update()
         {
-            stateMachine.UpdateState(out var behaviour);
-
-            if (behaviour is CameraBehaviour cameraBehaviour && IServiceManager.Default.TryGetService<HUD>(out var hudService) && hudService.TryGetHUDBehaviour<HUDInteractable>(out var interactable))
-            {
-                interactable.TrySetNewInteractable(cameraBehaviour.FindInteractable(this));
-            }
+            stateMachine.UpdateState();
         }
 
         public void SetBehaviour(CameraBehaviour newBehaviour)
@@ -54,6 +56,15 @@ namespace AnyoxGames.CameraSystem
         public void SetTarget(ICameraTarget newTarget)
         {
             Target = newTarget;
+        }
+
+        public void TryFocusOnNewInteractable(IInteractable interactable)
+        {
+            if (focusedInteractable == interactable)
+                return;
+            
+            focusedInteractable = interactable;
+            OnFocusedInteractableChanged?.Invoke(focusedInteractable);
         }
     }
 }

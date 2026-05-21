@@ -10,8 +10,6 @@ public abstract class ACharacter : ADamageable, ICameraTarget
     //[ReadOnly, InfoBox("Behaviours are executed from top to bottom, use CharacterBehaviourAttribute to define priority")]
     [SerializeField] private List<ACharacterBehaviour> allBehaviours;
 
-    protected IInteractable CurrentInteractable;
-    
     private Dictionary<Type, ACharacterBehaviour> registeredBehaviours = new();
 
     protected override void Awake()
@@ -63,11 +61,6 @@ public abstract class ACharacter : ADamageable, ICameraTarget
         {
             behaviour.OnUpdate();
         }
-    }
-
-    public void SetCurrentInteractable(IInteractable interactable)
-    {
-        CurrentInteractable = interactable;
     }
 
     //[Button("Revalidate Behaviours")]

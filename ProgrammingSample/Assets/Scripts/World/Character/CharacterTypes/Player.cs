@@ -9,7 +9,6 @@ namespace AnyoxGames.Character
     public class Player : ACharacter, IService
     {
         [SerializeField] private Transform CameraTarget;
-        [SerializeField] private InputAction InteractAction;
 
         protected override void Awake()
         {
@@ -32,25 +31,11 @@ namespace AnyoxGames.Character
                 cameraSystem.SetTarget(this);
                 cameraSystem.SetBehaviour(cameraSystem.DefaultFirstPersonBehaviour);
             }
-
-            InteractAction.performed += OnInteract;
-            InteractAction.Enable();
         }
 
         private void OnDestroy()
         {
-            InteractAction.Disable();
-            InteractAction.performed -= OnInteract;
-
             IServiceManager.Default.TryUnregisterService<Player>(this);
-        }
-
-        private void OnInteract(InputAction.CallbackContext obj)
-        {
-            if (CurrentInteractable == null)
-                return;
-
-            CurrentInteractable.OnInteract(this);
         }
 
         public override Transform GetTransformCameraTarget()

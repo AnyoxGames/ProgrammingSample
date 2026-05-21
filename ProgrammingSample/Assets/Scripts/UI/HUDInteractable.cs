@@ -1,56 +1,46 @@
+using AnyoxGames.CameraSystem;
+using AnyoxGames.Service;
 using TMPro;
 using UnityEngine;
 
 namespace AnyoxGames.UI
 {
-    public class HUDInteractable : AHUDBehaviour
+    public class HUDInteractable : MonoBehaviour
     {
-        private static readonly Color WhiteClear = new(255, 255, 255, 0);
+        private static readonly Color WhiteClear = new(1f, 1f, 1f, 0);
 
         [SerializeField] private TextMeshProUGUI interactableName;
         [SerializeField] private TextMeshProUGUI actionName;
-
-        private IInteractable currentInteractable;
 
         private void Awake()
         {
             interactableName.color = WhiteClear;
             actionName.color = WhiteClear;
+
+            if (IServiceManager.Default.TryGetService<GameCamera>(out var cameraService))
+            {
+                cameraService.OnFocusedInteractableChanged += UpdateInteractable;
+            }
         }
 
-        public void TrySetNewInteractable(IInteractable newInteractable)
+        private void UpdateInteractable(IInteractable newInteractable)
         {
-            if (newInteractable == currentInteractable)
-                return;
-
-            currentInteractable = newInteractable;
-
-            if (currentInteractable != null)
+            if (newInteractable != null)
             {
-                interactableName.text = currentInteractable.Name;
-                actionName.text = $"[E] {currentInteractable.Action}";
+                interactableName.text = newInteractable.Name;
+                actionName.text = $"[E] {newInteractable.Action}";
+                
+                interactableName.color = Color.white;
+                actionName.color = Color.white;
             }
             else
             {
                 interactableName.text = null;
                 actionName.text = null;
+                
+                interactableName.color = WhiteClear;
+                actionName.color = WhiteClear;
             }
-        }
-
-        private void Update()
-        {
-            if (currentInteractable != null)
-            {
-                interactableName.color = Color.Lerp(interactableName.color, Color.white, 50 * Time.deltaTime);
-                actionName.color = Color.Lerp(actionName.color, Color.white, 50 * Time.deltaTime);
-            }
-            else
-            {
-                interactableName.color = Color.Lerp(interactableName.color, WhiteClear, 50 * Time.deltaTime);
-                actionName.color = Color.Lerp(actionName.color, WhiteClear, 50 * Time.deltaTime);
-            }
-
-
         }
     }
 }

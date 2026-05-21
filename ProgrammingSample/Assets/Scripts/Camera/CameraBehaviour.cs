@@ -62,6 +62,8 @@ namespace AnyoxGames.CameraSystem
             }
 
             OnUpdate(target);
+            
+            target.TryFocusOnNewInteractable(GetFocusedInteractable(target));
         }
         protected abstract void OnUpdate(GameCamera target);
 
@@ -70,7 +72,7 @@ namespace AnyoxGames.CameraSystem
             OnExit(target);
         }
         protected virtual void OnExit(GameCamera target) { }
-        
-        public virtual IInteractable FindInteractable(GameCamera target) => null;
+
+        public virtual IInteractable GetFocusedInteractable(GameCamera target) => null;
     }
 }

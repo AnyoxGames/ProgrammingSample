@@ -76,20 +76,13 @@ namespace AnyoxGames.CameraSystem
             lookInputDelta = new Vector2(vector.x, vector.y);
         }
 
-        public override IInteractable FindInteractable(GameCamera target)
+        public override IInteractable GetFocusedInteractable(GameCamera target)
         {
-            if (target.CurrentTarget.TryGetTargetedCharacter(out var character))
+            var count = Physics.RaycastNonAlloc(target.transform.position, target.transform.forward, interactHits, maxInteractableDistance, interactableMask);
+
+            for (int i = 0; i < count; i++) if (interactHits[i].collider.TryGetComponent(out IInteractable interactable))
             {
-                var count = Physics.RaycastNonAlloc(target.transform.position, target.transform.forward, interactHits, maxInteractableDistance, interactableMask);
-
-                for (int i = 0; i < count; i++)
-                    if (interactHits[i].collider.TryGetComponent(out IInteractable interactable))
-                    {
-                        character.SetCurrentInteractable(interactable);
-                        return interactable;
-                    }
-
-                character.SetCurrentInteractable(null);
+                return interactable;
             }
 
             return null;
