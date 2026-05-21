@@ -7,15 +7,8 @@ namespace AnyoxGames.UI
 {
     public class HUD : MonoBehaviourService
     {
-        public static readonly InitEvent<HUD> OnHUDCreated = new();
-
         //Use of the Odin Inspector package, commented out as it's not included with this project
         [ /*ReadOnly, */SerializeField] private List<AHUDBehaviour> AllBehaviours;
-
-        private void Start()
-        {
-            OnHUDCreated.Invoke(this);
-        }
 
         public bool HasHUDBehaviour<T>() where T : AHUDBehaviour
         {

@@ -8,6 +8,8 @@ namespace AnyoxGames.CameraSystem
     {
         [SerializeField] protected bool captureCursor;
 
+        private bool initialized;
+
         //Use of the Odin Inspector package, commented out as it's not included with this project
 /*#if UNITY_EDITOR
     [Button(name: "Enter State")]
@@ -20,8 +22,16 @@ namespace AnyoxGames.CameraSystem
     }
 #endif*/
 
-        public virtual void EnterState(GameCamera target)
+        protected virtual void Initialize(GameCamera target) { }
+
+        public void EnterState(GameCamera target)
         {
+            if (!initialized)
+            {
+                Initialize(target);
+                initialized = true;
+            }
+            
             if (!captureCursor && CursorUtils.IsCursorCaptured)
             {
                 CursorUtils.ReleaseCursor();
@@ -30,7 +40,11 @@ namespace AnyoxGames.CameraSystem
             {
                 CursorUtils.CaptureCursor();
             }
+            
+            OnEnter(target);
         }
+        protected virtual void OnEnter(GameCamera target) { }
+        
 
         public void UpdateState(GameCamera target)
         {
@@ -49,13 +63,14 @@ namespace AnyoxGames.CameraSystem
 
             OnUpdate(target);
         }
-
-        public virtual IInteractable FindInteractable(GameCamera target) => null;
-
         protected abstract void OnUpdate(GameCamera target);
 
         public virtual void ExitState(GameCamera target)
         {
+            OnExit(target);
         }
+        protected virtual void OnExit(GameCamera target) { }
+        
+        public virtual IInteractable FindInteractable(GameCamera target) => null;
     }
 }

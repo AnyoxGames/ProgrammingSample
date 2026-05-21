@@ -12,6 +12,9 @@ namespace AnyoxGames.CameraSystem
         [SerializeField] private float moveSpeedSharpness;
         [SerializeField] private float rotationSpeed;
         [SerializeField] private float rotationSharpness;
+        
+        [SerializeField, Range(-90f, 90f)] private float minVerticalAngle = -90f;
+        [SerializeField, Range(-90f, 90f)] private float maxVerticalAngle = 90f;
 
         [SerializeField] private InputAction moveAction;
         [SerializeField] private InputAction lookAction;
@@ -23,18 +26,26 @@ namespace AnyoxGames.CameraSystem
         private Vector3 planarDirection;
         private float targetVerticalAngle;
 
-        public override void EnterState(GameCamera target)
+        protected override void Initialize(GameCamera target)
         {
-            moveAction.performed += OnMove;
-            moveAction.canceled += OnMove;
+            moveAction.performed += OnMove; moveAction.canceled += OnMove;
+            lookAction.performed += OnLook; lookAction.canceled += OnLook;
+        }
+
+        protected override void OnEnter(GameCamera target)
+        {
             moveAction.Enable();
-            lookAction.performed += OnLook;
-            lookAction.canceled += OnLook;
             lookAction.Enable();
 
             planarDirection = target.transform.forward;
         }
 
+        protected override void OnExit(GameCamera target)
+        {
+            moveAction.Disable();
+            lookAction.Disable();
+        }
+        
         protected override void OnUpdate(GameCamera target)
         {
             targetVelocity = new Vector3(moveInputDelta.x, 0, moveInputDelta.z) * moveSpeed;
@@ -46,7 +57,7 @@ namespace AnyoxGames.CameraSystem
             Quaternion planarRot = Quaternion.LookRotation(planarDirection, Vector3.up);
 
             targetVerticalAngle -= (lookInputDelta.y * rotationSpeed);
-            targetVerticalAngle = Mathf.Clamp(targetVerticalAngle, -90, 90);
+            targetVerticalAngle = Mathf.Clamp(targetVerticalAngle, minVerticalAngle, maxVerticalAngle);
             Quaternion verticalRot = Quaternion.Euler(targetVerticalAngle, 0, 0);
             Quaternion targetRotation = Quaternion.Slerp(target.transform.rotation, planarRot * verticalRot, 1f - Mathf.Exp(-rotationSharpness * Time.deltaTime));
 
@@ -57,18 +68,14 @@ namespace AnyoxGames.CameraSystem
             target.transform.Translate(velocity * Time.deltaTime);
         }
 
-        public override void ExitState(GameCamera target)
-        {
-            moveAction.performed -= OnMove;
-            moveAction.canceled -= OnMove;
-            moveAction.Disable();
-            lookAction.performed -= OnLook;
-            lookAction.canceled -= OnLook;
-            lookAction.Disable();
-        }
-
         private void OnMove(InputAction.CallbackContext context)
         {
+            if (!CursorUtils.IsCursorCaptured)
+            {
+                moveInputDelta = Vector2.zero;
+                return;
+            }
+            
             var value = context.ReadValue<Vector2>();
             moveInputDelta.Set(value.x, 0, value.y);
         }
@@ -85,7 +92,7 @@ namespace AnyoxGames.CameraSystem
 
             if (context.control.device is Mouse)
             {
-                //TODO Make this in config file
+                //TODO Make this a settings menu option
                 vector.x *= 0.05f;
                 vector.y *= 0.05f;
             }

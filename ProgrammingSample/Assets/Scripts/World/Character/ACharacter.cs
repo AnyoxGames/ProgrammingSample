@@ -86,7 +86,7 @@ public abstract class ACharacter : ADamageable, ICameraTarget
         return transform;
     }
 
-    public bool TryGetCharacterCameraTarget(out ACharacter character)
+    public bool TryGetTargetedCharacter(out ACharacter character)
     {
         character = this;
         return true;

@@ -13,14 +13,12 @@ namespace AnyoxGames.CameraSystem
 
         private StateMachine<GameCamera> stateMachine;
 
+        public ICameraTarget OverrideTarget { get; private set; }
+        public ICameraTarget Target { get; private set; }
+        public ICameraTarget CurrentTarget => OverrideTarget ?? Target;
         public Camera MainCamera => mainCamera;
         public FreeCameraBehaviour DefaultFreeBehaviour => defaultFreeBehaviour;
         public FirstPersonCameraBehaviour DefaultFirstPersonBehaviour => defaultFirstPersonBehaviour;
-
-        public ICameraTarget OverrideTarget { get; private set; }
-        public ICameraTarget Target { get; private set; }
-
-        public ICameraTarget CurrentTarget => OverrideTarget ?? Target;
 
         protected override void Awake()
         {

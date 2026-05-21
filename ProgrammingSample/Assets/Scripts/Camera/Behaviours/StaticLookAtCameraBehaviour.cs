@@ -9,12 +9,10 @@ namespace AnyoxGames.CameraSystem
         [SerializeField] private Vector3 positionOffset;
         [SerializeField] private Vector3 aimOffset;
 
-        public override void EnterState(GameCamera target)
+        protected override void OnEnter(GameCamera target)
         {
-            base.EnterState(target);
-
             target.transform.position = target.CurrentTarget.GetTransformCameraTarget().position;
-            target.transform.forward = target.CurrentTarget.GetTransformCameraTarget().forward;
+            target.transform.LookAt(target.CurrentTarget.GetTransformCameraTarget().position + aimOffset);
         }
 
         protected override void OnUpdate(GameCamera target)
@@ -24,7 +22,6 @@ namespace AnyoxGames.CameraSystem
                 return;
             }
 
-            target.transform.position = target.CurrentTarget.GetTransformCameraTarget().position + positionOffset;
             target.transform.LookAt(target.CurrentTarget.GetTransformCameraTarget().position + aimOffset);
         }
     }

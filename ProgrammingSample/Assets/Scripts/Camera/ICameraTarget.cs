@@ -6,7 +6,7 @@ namespace AnyoxGames.CameraSystem
     {
         public Transform GetTransformCameraTarget();
 
-        public bool TryGetCharacterCameraTarget(out ACharacter character)
+        public bool TryGetTargetedCharacter(out ACharacter character)
         {
             character = null;
             return false;

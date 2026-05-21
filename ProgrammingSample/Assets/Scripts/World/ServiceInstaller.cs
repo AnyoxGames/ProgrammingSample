@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class WorldCore : MonoBehaviour
+public class ServiceInstaller : MonoBehaviour
 {
     protected void Awake()
     {
