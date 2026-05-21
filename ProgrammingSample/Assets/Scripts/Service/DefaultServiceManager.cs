@@ -10,7 +10,7 @@ namespace AnyoxGames.Service
 
         public DefaultServiceManager()
         {
-            Debug.Log("Created Service Manager");
+            Debug.Log("Created service manager");
         }
         
         public bool TryGetService<T>(out T service) where T : class, IService
@@ -39,7 +39,14 @@ namespace AnyoxGames.Service
 
         public bool TryUnregisterService(Type contract)
         {
-            return services.ContainsKey(contract) && services.Remove(contract);
+            if (services.ContainsKey(contract) && services.Remove(contract))
+            {
+                Debug.Log($"Unregistered Service: {contract}");
+                return true;
+            }
+            
+            Debug.Log($"<color=red>Failed to unregister service: {contract}</color>");
+            return false;
         }
     }
 }
